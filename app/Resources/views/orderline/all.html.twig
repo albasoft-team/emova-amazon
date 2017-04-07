@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row" ng-controller="orderlineController">
+        <div class = "panel panel-primary" ng-init="getAll()">
+            {#<input type="button"  ng-click="getAll()" value="Orderline" />#}
+            <div class = "panel-heading">
+                <a href="{{ path("orderline_index") }}" class="panel-title pull-right"><i class="glyphicon glyphicon-resize-small"></i></a>
+                <p class = "panel-title">Commande en arrivée</p>
+            </div>
+            <div class="panel-body" >
+                <h4 class="page-header">Liste de toutes les commandes</h4>
+
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Reference</th>
+                            <th>Numero commande</th>
+                            <th>Designation</th>
+                            <th>Address livraison</th>
+                            <th>Quantite</th>
+                            <th>Prixunitaire</th>
+                            <th>Prixttc</th>
+                            <th>statut</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {#{% for orderLine in orderLines %}#}
+                            <tr ng-repeat="orderLine in orderLines">
+                                {#<td><a href="{{ path('orderline_show', { 'id': orderLine.id }) }}">{{ orderLine.id }}</a></td>#}
+                                <td>
+                                    <a href="#" data-toggle="modal" data-target="#myModal">[[ orderLine.reference ]]</a>
+                                    <div id="myModal" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">[[ orderLine.numeroCommande ]]</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>[[ orderLine.numeroCommande ]]</td>
+                                <td>[[ orderLine.designation ]]</td>
+                                <td>[[ orderLine.addressLivraison ]]</td>
+                                {#<td>{% if orderLine.dateFacturation %}{{ orderLine.dateFacturation|date('d-m-Y') }}{% endif %}</td>#}
+                                <td>[[ orderLine.quantite ]]</td>
+                                <td>[[ orderLine.prixUnitaire ]]</td>
+                                <td>[[ orderLine.prixTTC ]]</td>
+                                <td>[[ orderLine.statut ]]</td>
+                                {#<td>#}
+                                {#<a class="btn btn-default" href="{{ path('orderline_show', { 'id': orderLine.id }) }}">show</a> |#}
+                                {#<a class="btn btn-success" href="{{ path('orderline_edit', { 'id': orderLine.id }) }}">edit</a>#}
+                                {#</td>#}
+                            </tr>
+                        {#{% endfor %}#}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Modal -->
+
+            </div>
+        </div>
+
+        {#<ul >#}
+            {#<li>[[orderLine.reference]]</li>#}
+        {#</ul>#}
+    </div>
+
+{% endblock %}

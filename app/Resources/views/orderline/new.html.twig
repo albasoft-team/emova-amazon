@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <a class="btn btn-default" href="{{ path('orderline_index') }}">Back to the list</a>
+    <h1>Orderline creation</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input class="btn btn-success" type="submit" value="Create" style="margin-top: 10px" />
+    {{ form_end(form) }}
+{% endblock %}

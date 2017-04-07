@@ -1,0 +1,442 @@
+<?php
+
+namespace Emova\IelraBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * OrderLine
+ *
+ * @ORM\Table(name="order_line")
+ * @ORM\Entity(repositoryClass="Emova\IelraBundle\Repository\OrderLineRepository")
+ */
+class OrderLine
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="reference", type="string", length=255)
+     */
+    private $reference;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="addressLivraison", type="string", length=255)
+     */
+    private $addressLivraison;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="designation", type="string", length=255)
+     */
+    private $designation;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="quantite", type="integer")
+     */
+    private $quantite;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="prix_unitaire", type="float")
+     */
+    private $prixUnitaire;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="tVA", type="float")
+     */
+    private $tVA;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="prix_TTC", type="float")
+     */
+    private $prixTTC;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="frais_livraison", type="float")
+     */
+    private $fraisLivraison;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="numero_commande", type="string", length=255)
+     */
+    private $numeroCommande;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_facturation", type="datetime")
+     */
+    private $dateFacturation;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="numero_facture", type="string", length=255)
+     */
+    private $numeroFacture;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="devise", type="string", length=255)
+     */
+    private $devise;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255)
+     */
+    private $email;
+
+    /**
+     * @var string
+     * @ORM\Column(name="statut", type="string", length=255)
+     */
+    private $statut;
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set reference
+     *
+     * @param string $reference
+     *
+     * @return OrderLine
+     */
+    public function setReference($reference)
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
+
+    /**
+     * Get reference
+     *
+     * @return string
+     */
+    public function getReference()
+    {
+        return $this->reference;
+    }
+
+    /**
+     * Set addressLivraison
+     *
+     * @param string $addressLivraison
+     *
+     * @return OrderLine
+     */
+    public function setAddressLivraison($addressLivraison)
+    {
+        $this->addressLivraison = $addressLivraison;
+
+        return $this;
+    }
+
+    /**
+     * Get addressLivraison
+     *
+     * @return string
+     */
+    public function getAddressLivraison()
+    {
+        return $this->addressLivraison;
+    }
+
+    /**
+     * Set designation
+     *
+     * @param string $designation
+     *
+     * @return OrderLine
+     */
+    public function setDesignation($designation)
+    {
+        $this->designation = $designation;
+
+        return $this;
+    }
+
+    /**
+     * Get designation
+     *
+     * @return string
+     */
+    public function getDesignation()
+    {
+        return $this->designation;
+    }
+
+    /**
+     * Set quantite
+     *
+     * @param integer $quantite
+     *
+     * @return OrderLine
+     */
+    public function setQuantite($quantite)
+    {
+        $this->quantite = $quantite;
+
+        return $this;
+    }
+
+    /**
+     * Get quantite
+     *
+     * @return int
+     */
+    public function getQuantite()
+    {
+        return $this->quantite;
+    }
+
+    /**
+     * Set prixUnitaire
+     *
+     * @param float $prixUnitaire
+     *
+     * @return OrderLine
+     */
+    public function setPrixUnitaire($prixUnitaire)
+    {
+        $this->prixUnitaire = $prixUnitaire;
+
+        return $this;
+    }
+
+    /**
+     * Get prixUnitaire
+     *
+     * @return float
+     */
+    public function getPrixUnitaire()
+    {
+        return $this->prixUnitaire;
+    }
+
+    /**
+     * Set tVA
+     *
+     * @param float $tVA
+     *
+     * @return OrderLine
+     */
+    public function setTVA($tVA)
+    {
+        $this->tVA = $tVA;
+
+        return $this;
+    }
+
+    /**
+     * Get tVA
+     *
+     * @return float
+     */
+    public function getTVA()
+    {
+        return $this->tVA;
+    }
+
+    /**
+     * Set prixTTC
+     *
+     * @param float $prixTTC
+     *
+     * @return OrderLine
+     */
+    public function setPrixTTC($prixTTC)
+    {
+        $this->prixTTC = $prixTTC;
+
+        return $this;
+    }
+
+    /**
+     * Get prixTTC
+     *
+     * @return float
+     */
+    public function getPrixTTC()
+    {
+        return $this->prixTTC;
+    }
+
+    /**
+     * Set fraisLivraison
+     *
+     * @param float $fraisLivraison
+     *
+     * @return OrderLine
+     */
+    public function setFraisLivraison($fraisLivraison)
+    {
+        $this->fraisLivraison = $fraisLivraison;
+
+        return $this;
+    }
+
+    /**
+     * Get fraisLivraison
+     *
+     * @return float
+     */
+    public function getFraisLivraison()
+    {
+        return $this->fraisLivraison;
+    }
+
+    /**
+     * Set numeroCommande
+     *
+     * @param string $numeroCommande
+     *
+     * @return OrderLine
+     */
+    public function setNumeroCommande($numeroCommande)
+    {
+        $this->numeroCommande = $numeroCommande;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroCommande
+     *
+     * @return string
+     */
+    public function getNumeroCommande()
+    {
+        return $this->numeroCommande;
+    }
+
+    /**
+     * Set dateFacturation
+     *
+     * @param \DateTime $dateFacturation
+     *
+     * @return OrderLine
+     */
+    public function setDateFacturation($dateFacturation)
+    {
+        $this->dateFacturation = $dateFacturation;
+
+        return $this;
+    }
+
+    /**
+     * Get dateFacturation
+     *
+     * @return \DateTime
+     */
+    public function getDateFacturation()
+    {
+        return $this->dateFacturation;
+    }
+
+    /**
+     * Set numeroFacture
+     *
+     * @param string $numeroFacture
+     *
+     * @return OrderLine
+     */
+    public function setNumeroFacture($numeroFacture)
+    {
+        $this->numeroFacture = $numeroFacture;
+
+        return $this;
+    }
+
+    /**
+     * Get numeroFacture
+     *
+     * @return string
+     */
+    public function getNumeroFacture()
+    {
+        return $this->numeroFacture;
+    }
+
+    /**
+     * Set devise
+     *
+     * @param string $devise
+     *
+     * @return OrderLine
+     */
+    public function setDevise($devise)
+    {
+        $this->devise = $devise;
+
+        return $this;
+    }
+
+    /**
+     * Get devise
+     *
+     * @return string
+     */
+    public function getDevise()
+    {
+        return $this->devise;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return OrderLine
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+}
+

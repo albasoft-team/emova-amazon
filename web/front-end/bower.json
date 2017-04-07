@@ -1,0 +1,17 @@
+{
+  "name": "front-end",
+  "authors": [
+    "albasoft-team <ibrahima-sory.diallo@albasoft.fr>"
+  ],
+  "description": "angular js pour dinamiser certaine vue",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

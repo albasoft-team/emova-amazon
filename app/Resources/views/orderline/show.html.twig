@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Orderline</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ orderLine.id }}</td>
+            </tr>
+            <tr>
+                <th>Reference</th>
+                <td>{{ orderLine.reference }}</td>
+            </tr>
+            <tr>
+                <th>Addresslivraison</th>
+                <td>{{ orderLine.addressLivraison }}</td>
+            </tr>
+            <tr>
+                <th>Designation</th>
+                <td>{{ orderLine.designation }}</td>
+            </tr>
+            <tr>
+                <th>Quantite</th>
+                <td>{{ orderLine.quantite }}</td>
+            </tr>
+            <tr>
+                <th>Prixunitaire</th>
+                <td>{{ orderLine.prixUnitaire }}</td>
+            </tr>
+            <tr>
+                <th>Tva</th>
+                <td>{{ orderLine.tVA }}</td>
+            </tr>
+            <tr>
+                <th>Prixttc</th>
+                <td>{{ orderLine.prixTTC }}</td>
+            </tr>
+            <tr>
+                <th>Fraislivraison</th>
+                <td>{{ orderLine.fraisLivraison }}</td>
+            </tr>
+            <tr>
+                <th>Numerocommande</th>
+                <td>{{ orderLine.numeroCommande }}</td>
+            </tr>
+            <tr>
+                <th>Datefacturation</th>
+                <td>{% if orderLine.dateFacturation %}{{ orderLine.dateFacturation|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Numerofacture</th>
+                <td>{{ orderLine.numeroFacture }}</td>
+            </tr>
+            <tr>
+                <th>Devise</th>
+                <td>{{ orderLine.devise }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ orderLine.email }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('orderline_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('orderline_edit', { 'id': orderLine.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
