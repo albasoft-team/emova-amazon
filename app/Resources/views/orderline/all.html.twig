@@ -30,8 +30,8 @@
                             <tr ng-repeat="orderLine in orderLines">
                                 {#<td><a href="{{ path('orderline_show', { 'id': orderLine.id }) }}">{{ orderLine.id }}</a></td>#}
                                 <td>
-                                    <a href="#" data-toggle="modal" data-target="#myModal">[[ orderLine.reference ]]</a>
-                                    <div id="myModal" class="modal fade" role="dialog">
+                                    <a href="#" data-toggle="modal" data-target="#myModal[[orderLine.id]]">[[ orderLine.reference ]]</a>
+                                    <div id="myModal[[orderLine.id]]" class="modal fade" role="dialog">
                                         <div class="modal-dialog">
 
                                             <!-- Modal content-->
@@ -41,8 +41,14 @@
                                                     <h4 class="modal-title">[[ orderLine.numeroCommande ]]</h4>
                                                 </div>
                                                 <div class="modal-body">
+                                                    <ur>
+                                                        <li>[[ orderLine.reference ]]</li>
+                                                        <li>[[ orderLine.designation ]]</li>
+                                                        <li>[[ orderLine.addressLivraison ]]</li>
+                                                    </ur>
                                                 </div>
                                                 <div class="modal-footer">
+                                                    <button type="button" class="btn btn-success pull-left" >Preparer</button>
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                 </div>
                                             </div>
