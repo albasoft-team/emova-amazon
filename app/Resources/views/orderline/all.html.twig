@@ -1,12 +1,26 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <a class="btn btn-default" href="{{ path('orderline_index') }}">Retour</a>
+    <hr>
     <div class="row" ng-controller="orderlineController">
-        <div class = "panel panel-primary" ng-init="getAll()">
+        <div class = "panel panel-primary">
             {#<input type="button"  ng-click="getAll()" value="Orderline" />#}
             <div class = "panel-heading">
-                <a href="{{ path("orderline_index") }}" class="panel-title pull-right"><i class="glyphicon glyphicon-resize-small"></i></a>
-                <p class = "panel-title">Commande en arrivée</p>
+                {% if orderLines %}
+                <a href="{{ path('orderline_index') }}" class="panel-title pull-right">
+                    <i class="glyphicon glyphicon-resize-small"></i>
+                </a>
+                {% endif %}
+                {% set titre = "" %}
+                {% for orderLine in orderLines %}
+                    {% if loop.index == 1 %}
+                        {% set titre = orderLine.statut %}
+                    {% endif %}
+                {% endfor %}
+                {% if orderLines %}
+                    <p class="panel-title">Commande  {{ titre }}</p>
+                {% endif %}
             </div>
             <div class="panel-body" >
                 <h4 class="page-header">Liste de toutes les commandes</h4>
@@ -26,50 +40,59 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {#{% for orderLine in orderLines %}#}
-                            <tr ng-repeat="orderLine in orderLines">
+                       {% for orderLine in orderLines %}
+                            <tr>
                                 {#<td><a href="{{ path('orderline_show', { 'id': orderLine.id }) }}">{{ orderLine.id }}</a></td>#}
                                 <td>
-                                    <a href="#" data-toggle="modal" data-target="#myModal[[orderLine.id]]">[[ orderLine.reference ]]</a>
-                                    <div id="myModal[[orderLine.id]]" class="modal fade" role="dialog">
+                                    <a href="#" data-toggle="modal" data-target="#myModal{{ orderLine.id}}">{{  orderLine.reference }}</a>
+                                    <div id="myModal{{ orderLine.id}}" class="modal fade" role="dialog">
                                         <div class="modal-dialog">
 
                                             <!-- Modal content-->
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                    <h4 class="modal-title">[[ orderLine.numeroCommande ]]</h4>
+                                                    <h4 class="modal-title">{{  orderLine.numeroCommande }}</h4>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <ur>
-                                                        <li>[[ orderLine.reference ]]</li>
-                                                        <li>[[ orderLine.designation ]]</li>
-                                                        <li>[[ orderLine.addressLivraison ]]</li>
+                                                    <ur class="list-group">
+                                                        <li class="list-group-item">Reference : <span class="badge">{{  orderLine.reference }}</span></li>
+                                                        <li class="list-group-item">Numéro commande : <span class="badge">{{  orderLine.numeroCommande }}</span></li>
+                                                        <li class="list-group-item">Désignation : <span class="badge">{{  orderLine.designation }}</span></li>
+                                                        <li class="list-group-item">Adresse de livraison : <span class="badge">{{  orderLine.addressLivraison }}</span></li>
+                                                        <li class="list-group-item">Quantité: <span class="badge">{{  orderLine.quantite }}</span></li>
+                                                        <li class="list-group-item">Prix unitaire : <span class="badge">{{  orderLine.prixUnitaire }}</span></li>
+                                                        <li class="list-group-item">Prix TTC : <span class="badge">{{  orderLine.prixTTC }}</span></li>
+                                                        <li class="list-group-item">Statut : <span class="badge">{{  orderLine.statut }}</span></li>
                                                     </ur>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-success pull-left" >Preparer</button>
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    {% if orderLine.statut == 'arrive' %}
+                                                        <button type="button" ng-click="setStatus('{{ orderLine.id }}')" class="btn btn-success pull-left" >Preparer</button>
+                                                    {% else %}
+                                                        <button type="button" ng-click="setStatus('{{ orderLine.id }}')" class="btn btn-success pull-left" >En arrivée</button>
+                                                    {% endif %}
+                                                    <button type="button" id="closepop" class="btn btn-default" data-dismiss="modal">Close</button>
                                                 </div>
                                             </div>
 
                                         </div>
                                     </div>
                                 </td>
-                                <td>[[ orderLine.numeroCommande ]]</td>
-                                <td>[[ orderLine.designation ]]</td>
-                                <td>[[ orderLine.addressLivraison ]]</td>
+                                <td>{{  orderLine.numeroCommande }}</td>
+                                <td>{{  orderLine.designation }}</td>
+                                <td>{{  orderLine.addressLivraison }}</td>
                                 {#<td>{% if orderLine.dateFacturation %}{{ orderLine.dateFacturation|date('d-m-Y') }}{% endif %}</td>#}
-                                <td>[[ orderLine.quantite ]]</td>
-                                <td>[[ orderLine.prixUnitaire ]]</td>
-                                <td>[[ orderLine.prixTTC ]]</td>
-                                <td>[[ orderLine.statut ]]</td>
+                                <td>{{  orderLine.quantite }}</td>
+                                <td>{{  orderLine.prixUnitaire }}</td>
+                                <td>{{  orderLine.prixTTC }}</td>
+                                <td>{{  orderLine.statut }}</td>
                                 {#<td>#}
                                 {#<a class="btn btn-default" href="{{ path('orderline_show', { 'id': orderLine.id }) }}">show</a> |#}
                                 {#<a class="btn btn-success" href="{{ path('orderline_edit', { 'id': orderLine.id }) }}">edit</a>#}
                                 {#</td>#}
                             </tr>
-                        {#{% endfor %}#}
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>

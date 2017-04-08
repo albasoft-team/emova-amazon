@@ -6,6 +6,7 @@ use Emova\IelraBundle\Entity\OrderLine;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Serializer;
@@ -29,34 +30,69 @@ class OrderLineController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $orderLines = $em->getRepository('IelraBundle:OrderLine')->findAll();
-
+        $orderLines = $em->getRepository('IelraBundle:OrderLine')->getOrderLineByStatut('arrive');
+        $orderLinesLivre = $em->getRepository('IelraBundle:OrderLine')->getOrderLineByStatut('livree');
+        $orderLinesPre = $em->getRepository('IelraBundle:OrderLine')->getOrderLineByStatut('preparee');
+        $orderLinesEnv = $em->getRepository('IelraBundle:OrderLine')->getOrderLineByStatut('envoyee');
         return $this->render('orderline/index.html.twig', array(
             'orderLines' => $orderLines,
+            'orderLinesL' => $orderLinesLivre,
+            'orderLinesP' => $orderLinesPre,
+            'orderLinesE' => $orderLinesEnv
         ));
     }
 
     /**
-     * @Route("/all", name="orderline_all")
+     * @Route("/all/{statut}", name="orderline_all")
      * @Method("GET")
      */
-    public function allCommandeAction()
+    public function allCommandeAction($statut)
     {
         $em = $this->getDoctrine()->getManager();
-        $orderLines = $em->getRepository('IelraBundle:OrderLine')->findAll();
+        $orderLines = $em->getRepository('IelraBundle:OrderLine')->getOrderLineByStatut($statut);
         return $this->render('orderline/all.html.twig', array(
             'orderLines' => $orderLines
         ));
     }
-     /**
+    /**
+     * @Route("/updateStatus", name="update_status")
+     * @Method({"POST"})
+     */
+    public function updateStatus(Request $request)
+    {
+        $data = json_decode($request->getContent(), TRUE);
+        $id = $data['id'];
+        $em = $this->getDoctrine()->getManager();
+        $orderline = $em->getRepository('IelraBundle:OrderLine')->find($id);
+        $oldstatus = $orderline->getStatut();
+        if (!$orderline) {
+            throw $this->createNotFoundException(
+                'No product found for id '.$id
+            );
+        }
+        if ($oldstatus == 'arrive') {
+            $orderline->setStatut('livree');
+        }
+        if ($oldstatus == 'livree')
+        {
+            $orderline->setStatut('arrive');
+        }
+        $em->flush();
+        $orderLines = $em->getRepository('IelraBundle:OrderLine')->getOrderLineByStatut($oldstatus);
+        $serializer = $this->get('serializer');
+        $arrayResult = $serializer->normalize($orderLines);
+        return new JsonResponse($arrayResult);
+    }
+
+    /**
      * @Route("/allCmd", name="orderline_allCmd")
      * @Method("GET")
      */
-    public function allCommandesAction()
+    public function allCommandesAction($status)
     {
         $em = $this->getDoctrine()->getManager();
-        $orderLines = $em->getRepository('IelraBundle:OrderLine')->findAll();
-     //   var_dump($orderLines);
+        $orderLines = $em->getRepository('IelraBundle:OrderLine')->getOrderLineByStatut($status);
+//        var_dump($orderLines);
         $serializer = $this->get('serializer');
         $arrayResult = $serializer->normalize($orderLines);
 

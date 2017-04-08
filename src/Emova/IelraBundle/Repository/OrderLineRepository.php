@@ -12,10 +12,14 @@ use Doctrine\ORM\EntityRepository;
 
 class OrderLineRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function getAllOrderLine($statut)
+    /**
+     * @param $statut
+     * @return array
+     */
+    public function getOrderLineByStatut($statut)
     {
         $query = $this->createQueryBuilder('o')
-            ->where('o.statut > :statut')
+            ->where('o.statut = :statut')
             ->setParameter('statut', $statut)
             ->orderBy('o.dateFacturation', 'ASC')
             ->getQuery();
@@ -25,4 +29,5 @@ class OrderLineRepository extends \Doctrine\ORM\EntityRepository
         // to get just one result:
         // $product = $query->setMaxResults(1)->getOneOrNullResult();
     }
+
 }

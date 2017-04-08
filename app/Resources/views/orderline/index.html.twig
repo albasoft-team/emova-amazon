@@ -1,77 +1,149 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Les dernières commandes</h1>
-    <div class="row">
-        <div class="col-xs-6 col-lg-6 col-md-6">
-            <div class = "panel panel-primary">
-                <div class = "panel-heading">
-                    <a href="{{ path("orderline_all") }}" class="panel-title pull-right"><i class="glyphicon glyphicon-resize-full"></i></a>
-                    <p class = "panel-title">Commande en arrivée</p>
-                </div>
+    <div ng-controller="orderlineController">
+        <h1>Les dernières commandes</h1>
+        <div class="row">
+            <div class="col-xs-6 col-lg-6 col-md-6">
+                <div class = "panel panel-primary">
+                    <div class = "panel-heading">
+                        <a href="{{ path("orderline_all" , {'statut' : 'arrive'}) }}" class="panel-title pull-right"><i class="glyphicon glyphicon-resize-full"></i></a>
+                        <p class = "panel-title">Commande en arrivée</p>
+                    </div>
 
-                <div class = "panel-body">
-                    <table class="table table-hover table-condensed">
-                        <thead>
-                        <tr>
-                            <th>Reference</th>
-                            <th>Numero commande</th>
-                            <th>Designation</th>
-                            <th>Date facturation</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for orderLine in orderLines %}
+                    <div class = "panel-body table-responsive">
+                        {% if orderLines %}
+                        <table class="table table-hover table-condensed">
+                            <thead>
                             <tr>
-                                {#<td><a href="{{ path('orderline_show', { 'id': orderLine.id }) }}">{{ orderLine.id }}</a></td>#}
-                                <td>{{ orderLine.reference }}</td>
-                                <td>{{ orderLine.numeroCommande }}</td>
-                                <td>{{ orderLine.designation }}</td>
-                                <td>{% if orderLine.dateFacturation %}{{ orderLine.dateFacturation|date('d-m-Y') }}{% endif %}</td>
+                                <th>Reference</th>
+                                <th>Numero commande</th>
+                                <th>Designation</th>
+                                <th>Date facturation</th>
                             </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-
+                            </thead>
+                            <tbody>
+                            {% for orderLine in orderLines %}
+                                <tr>
+                                    {#<td><a href="{{ path('orderline_show', { 'id': orderLine.id }) }}">{{ orderLine.id }}</a></td>#}
+                                    <td>{{ orderLine.reference }}</td>
+                                    <td>{{ orderLine.numeroCommande }}</td>
+                                    <td>{{ orderLine.designation }}</td>
+                                    <td>{% if orderLine.dateFacturation %}{{ orderLine.dateFacturation|date('d-m-Y') }}{% endif %}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-lg-6 col-md-6">
+                <div class = "panel panel-success">
+                    <div class = "panel-heading">
+                        <a href="{{ path("orderline_all", {'statut' : 'livree'}) }}" class="panel-title pull-right"><i class="glyphicon glyphicon-resize-full"></i></a>
+                        <h3 class = "panel-title">Commande livrée</h3>
+                    </div>
+                    <div class = "panel-body table-responsive">
+                        {% if orderLinesL %}
+                        <table class="table table-hover table-condensed">
+                            <thead>
+                            <tr>
+                                <th>Reference</th>
+                                <th>Numero commande</th>
+                                <th>Designation</th>
+                                <th>Date facturation</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for orderLine in orderLinesL %}
+                                <tr>
+                                    {#<td><a href="{{ path('orderline_show', { 'id': orderLine.id }) }}">{{ orderLine.id }}</a></td>#}
+                                    <td>{{ orderLine.reference }}</td>
+                                    <td>{{ orderLine.numeroCommande }}</td>
+                                    <td>{{ orderLine.designation }}</td>
+                                    <td>{% if orderLine.dateFacturation %}{{ orderLine.dateFacturation|date('d-m-Y') }}{% endif %}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-xs-6 col-lg-6 col-md-6">
-            <div class = "panel panel-success">
-                <div class = "panel-heading">
-                    <h3 class = "panel-title">Commande livrée</h3>
-                </div>
+        <div class="row">
+            <div class="col-xs-6 col-lg-6 col-md-6">
+                <div class = "panel panel-danger">
+                    <div class = "panel-heading">
+                        <a href="{{ path("orderline_all", {'statut' : 'preparee'}) }}"  class="panel-title pull-right"><i class="glyphicon glyphicon-resize-full"></i></a>
+                        <h3 class = "panel-title">Commande préparée</h3>
+                    </div>
 
-                <div class = "panel-body">
-                    This is a Basic panel
+                    <div class = "panel-body table-responsive">
+                        {% if orderLinesP %}
+                        <table class="table table-hover table-condensed">
+                            <thead>
+                            <tr>
+                                <th>Reference</th>
+                                <th>Numero commande</th>
+                                <th>Designation</th>
+                                <th>Date facturation</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for orderLine in orderLinesP %}
+                                <tr>
+                                    {#<td><a href="{{ path('orderline_show', { 'id': orderLine.id }) }}">{{ orderLine.id }}</a></td>#}
+                                    <td>{{ orderLine.reference }}</td>
+                                    <td>{{ orderLine.numeroCommande }}</td>
+                                    <td>{{ orderLine.designation }}</td>
+                                    <td>{% if orderLine.dateFacturation %}{{ orderLine.dateFacturation|date('d-m-Y') }}{% endif %}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6 col-lg-6 col-md-6">
+                <div class = "panel panel-warning">
+                    <div class = "panel-heading">
+                        <a href="{{ path("orderline_all", {'statut' : 'envoyee'}) }}"  class="panel-title pull-right"><i class="glyphicon glyphicon-resize-full"></i></a>
+                        <h3 class = "panel-title">Commande envoyée</h3>
+                    </div>
+
+                    <div class = "panel-body table-responsive">
+                        {% if orderLinesE %}
+                        <table class="table table-hover table-condensed">
+                            <thead>
+                            <tr>
+                                <th>Reference</th>
+                                <th>Numero commande</th>
+                                <th>Designation</th>
+                                <th>Date facturation</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for orderLine in orderLinesE %}
+                                <tr>
+                                    {#<td><a href="{{ path('orderline_show', { 'id': orderLine.id }) }}">{{ orderLine.id }}</a></td>#}
+                                    <td>{{ orderLine.reference }}</td>
+                                    <td>{{ orderLine.numeroCommande }}</td>
+                                    <td>{{ orderLine.designation }}</td>
+                                    <td>{% if orderLine.dateFacturation %}{{ orderLine.dateFacturation|date('d-m-Y') }}{% endif %}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-xs-6 col-lg-6 col-md-6">
-            <div class = "panel panel-danger">
-                <div class = "panel-heading">
-                    <h3 class = "panel-title">Commande préparée</h3>
-                </div>
 
-                <div class = "panel-body">
-                    This is a Basic panel
-                </div>
-            </div>
-        </div>
-        <div class="col-xs-6 col-lg-6 col-md-6">
-            <div class = "panel panel-warning">
-                <div class = "panel-heading">
-                    <h3 class = "panel-title">Commande envoyée</h3>
-                </div>
-
-                <div class = "panel-body">
-                    This is a Basic panel
-                </div>
-            </div>
-        </div>
-    </div>
 
 
     {#<table>#}
