@@ -20,6 +20,7 @@ class OrderLineRepository extends \Doctrine\ORM\EntityRepository
     {
         $query = $this->createQueryBuilder('o')
             ->where('o.statut = :statut')
+
             ->setParameter('statut', $statut)
             ->orderBy('o.dateFacturation', 'ASC')
             ->getQuery();
