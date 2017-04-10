@@ -71,12 +71,19 @@ class OrderLineController extends Controller
             );
         }
         if ($oldstatus == 'arrive') {
+            $orderline->setStatut('preparee');
+        }
+        if ($oldstatus == 'preparee') {
+            $orderline->setStatut('envoyee');
+        }
+        if ($oldstatus == 'envoyee') {
             $orderline->setStatut('livree');
         }
-        if ($oldstatus == 'livree')
-        {
-            $orderline->setStatut('arrive');
-        }
+
+//        if ($oldstatus == 'livree')
+//        {
+//            $orderline->setStatut('arrive');
+//        }
         $em->flush();
         $orderLines = $em->getRepository('IelraBundle:OrderLine')->getOrderLineByStatut($oldstatus);
         $serializer = $this->get('serializer');
