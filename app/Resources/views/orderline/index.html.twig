@@ -2,7 +2,6 @@
 
 {% block body %}
     <div ng-controller="orderlineController">
-        <h1>Les dernières commandes</h1>
         <div class="row">
             {% if is_granted('ROLE_GESCOM') %}
             <div class="col-xs-12 col-lg-6 col-md-12">
