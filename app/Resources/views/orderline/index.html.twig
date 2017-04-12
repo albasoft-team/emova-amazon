@@ -8,7 +8,7 @@
                 <div class = "panel panel-primary">
                     <div class = "panel-heading">
                         <a href="{{ path("orderline_all" , {'statut' : 'arrive'}) }}" class="panel-title pull-right"><i class="glyphicon glyphicon-resize-full"></i></a>
-                        <p class = "panel-title">Commande en arrivée</p>
+                        <p class = "panel-title">Commandes en arrivée</p>
                     </div>
 
                     <div class = "panel-body table-responsive">
@@ -19,14 +19,14 @@
                                 <th>Reference</th>
                                 <th>Numero commande</th>
                                 <th>Designation</th>
-                                <th>Date facturation</th>
+                                <th>Date création</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for orderLine in orderLines %}
                                 <tr>
                                     {#<td><a href="{{ path('orderline_show', { 'id': orderLine.id }) }}">{{ orderLine.id }}</a></td>#}
-                                    <td>{{ orderLine.reference }}</td>
+                                    <td><a href="{{ path("orderline_all" , {'statut' : 'arrive'}) }}">{{ orderLine.reference }}</a></td>
                                     <td>{{ orderLine.numeroCommande }}</td>
                                     <td>{{ orderLine.designation }}</td>
                                     <td>{% if orderLine.dateFacturation %}{{ orderLine.dateFacturation|date('d-m-Y') }}{% endif %}</td>
@@ -45,7 +45,7 @@
                     <div class = "panel panel-danger">
                         <div class = "panel-heading">
                             <a href="{{ path("orderline_all", {'statut' : 'preparee'}) }}"  class="panel-title pull-right"><i class="glyphicon glyphicon-resize-full"></i></a>
-                            <h3 class = "panel-title">Commande préparée</h3>
+                            <h3 class = "panel-title">Commandes préparées</h3>
                         </div>
 
                         <div class = "panel-body table-responsive">
@@ -56,14 +56,14 @@
                                         <th>Reference</th>
                                         <th>Numero commande</th>
                                         <th>Designation</th>
-                                        <th>Date facturation</th>
+                                        <th>Date de préparation</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {% for orderLine in orderLinesP %}
                                         <tr>
                                             {#<td><a href="{{ path('orderline_show', { 'id': orderLine.id }) }}">{{ orderLine.id }}</a></td>#}
-                                            <td>{{ orderLine.reference }}</td>
+                                            <td><a href="{{ path("orderline_all", {'statut' : 'preparee'}) }}">{{ orderLine.reference }}<a/></td>
                                             <td>{{ orderLine.numeroCommande }}</td>
                                             <td>{{ orderLine.designation }}</td>
                                             <td>{% if orderLine.dateFacturation %}{{ orderLine.dateFacturation|date('d-m-Y') }}{% endif %}</td>
@@ -80,10 +80,10 @@
         <div class="row">
             {% if is_granted('ROLE_GESCOM') %}
                 <div class="col-xs-12 col-lg-6 col-md-12">
-                    <div class = "panel panel-warning">
+                        <div class = "panel panel-warning">
                         <div class = "panel-heading">
                             <a href="{{ path("orderline_all", {'statut' : 'envoyee'}) }}"  class="panel-title pull-right"><i class="glyphicon glyphicon-resize-full"></i></a>
-                            <h3 class = "panel-title">Commande envoyée</h3>
+                            <h3 class = "panel-title">Commandes envoyées</h3>
                         </div>
 
                         <div class = "panel-body table-responsive">
@@ -94,14 +94,14 @@
                                         <th>Reference</th>
                                         <th>Numero commande</th>
                                         <th>Designation</th>
-                                        <th>Date facturation</th>
+                                        <th>Date d'envoie</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {% for orderLine in orderLinesE %}
                                         <tr>
                                             {#<td><a href="{{ path('orderline_show', { 'id': orderLine.id }) }}">{{ orderLine.id }}</a></td>#}
-                                            <td>{{ orderLine.reference }}</td>
+                                            <td><a href="{{ path("orderline_all", {'statut' : 'envoyee'}) }}">{{ orderLine.reference }}</a></td>
                                             <td>{{ orderLine.numeroCommande }}</td>
                                             <td>{{ orderLine.designation }}</td>
                                             <td>{% if orderLine.dateFacturation %}{{ orderLine.dateFacturation|date('d-m-Y') }}{% endif %}</td>
@@ -119,7 +119,7 @@
                 <div class = "panel panel-success">
                     <div class = "panel-heading">
                         <a href="{{ path("orderline_all", {'statut' : 'livree'}) }}" class="panel-title pull-right"><i class="glyphicon glyphicon-resize-full"></i></a>
-                        <h3 class = "panel-title">Commande livrée</h3>
+                        <h3 class = "panel-title">Commandes livrées</h3>
                     </div>
                     <div class = "panel-body table-responsive">
                         {% if orderLinesL %}
@@ -129,14 +129,14 @@
                                 <th>Reference</th>
                                 <th>Numero commande</th>
                                 <th>Designation</th>
-                                <th>Date facturation</th>
+                                <th>Date de livraison</th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for orderLine in orderLinesL %}
                                 <tr>
                                     {#<td><a href="{{ path('orderline_show', { 'id': orderLine.id }) }}">{{ orderLine.id }}</a></td>#}
-                                    <td>{{ orderLine.reference }}</td>
+                                    <td><a href="{{ path("orderline_all", {'statut' : 'livree'}) }}">{{ orderLine.reference }}</a></td>
                                     <td>{{ orderLine.numeroCommande }}</td>
                                     <td>{{ orderLine.designation }}</td>
                                     <td>{% if orderLine.dateFacturation %}{{ orderLine.dateFacturation|date('d-m-Y') }}{% endif %}</td>

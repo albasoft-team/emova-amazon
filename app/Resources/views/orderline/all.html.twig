@@ -1,26 +1,25 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <a class="btn btn-default" href="{{ path('orderline_index') }}">Retour</a>
-    <hr>
     <div class="row" ng-controller="orderlineController">
-        <div class = "panel panel-primary">
+        {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+        <div ng-init="getCurrentStatus('{{ currentPath }}')" class="[[statusCmd]]">
             {#<input type="button"  ng-click="getAll()" value="Orderline" />#}
             <div class = "panel-heading">
-                {% if orderLines %}
+                {#{% if orderLines %}#}
                 <a href="{{ path('orderline_index') }}" class="panel-title pull-right">
                     <i class="glyphicon glyphicon-resize-small"></i>
                 </a>
-                {% endif %}
-                {% set titre = "" %}
-                {% for orderLine in orderLines %}
-                    {% if loop.index == 1 %}
-                        {% set titre = orderLine.statut %}
-                    {% endif %}
-                {% endfor %}
-                {% if orderLines %}
-                    <p class="panel-title">Commande  {{ titre }}</p>
-                {% endif %}
+                {#{% endif %}#}
+                {#{% set titre = "" %}#}
+                {#{% for orderLine in orderLines %}#}
+                    {#{% if loop.index == 1 %}#}
+                        {#{% set titre = orderLine.statut %}#}
+                    {#{% endif %}#}
+                {#{% endfor %}#}
+                {#{% if orderLines %}#}
+                    <p class="panel-title">Commande  [[statut]]</p>
+                {#{% endif %}#}
             </div>
             <div class="panel-body" >
                 <div class="table-responsive">
@@ -66,13 +65,13 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     {% if orderLine.statut == 'arrive' %}
-                                                        <button type="button" ng-click="setStatus('{{ orderLine.id }}')" class="btn btn-success pull-left" >Preparee</button>
+                                                        <button type="button" ng-click="setStatus('{{ orderLine.id }}')" class="btn btn-success pull-left" >Preparer</button>
                                                     {% elseif(orderLine.statut == 'preparee') %}
-                                                        <button type="button" ng-click="setStatus('{{ orderLine.id }}')" class="btn btn-success pull-left" >Envoyee</button>
+                                                        <button type="button" ng-click="setStatus('{{ orderLine.id }}')" class="btn btn-success pull-left" >Envoyer</button>
                                                     {% else %}
-                                                        <button type="button" ng-click="setStatus('{{ orderLine.id }}')" class="btn btn-success pull-left" >Livree</button>
+                                                        <button type="button" ng-click="setStatus('{{ orderLine.id }}')" class="btn btn-success pull-left" >Livrer</button>
                                                     {% endif %}
-                                                    <button type="button" id="closepop" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                    <button type="button" id="closepop" class="btn btn-default" data-dismiss="modal">Fermer</button>
                                                 </div>
                                             </div>
 

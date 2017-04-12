@@ -4,6 +4,7 @@
  */
 emovaApp.controller('orderlineController', ['$scope','$http','$rootScope','$window', function ($scope, $http, $rootScope, $window) {
     $scope.orderLines = {};
+    $scope.statusCmd = '';
     $rootScope.setTheStutus = function () {
         $rootScope.status = '';
     };
@@ -31,6 +32,30 @@ emovaApp.controller('orderlineController', ['$scope','$http','$rootScope','$wind
         }, function errorCallback(response) {
 
         });
-    }
+    };
+
+    $scope.getCurrentStatus = function (pathstatus) {
+        console.log(pathstatus);
+
+        var status = pathstatus.split('/')[3];
+        $scope.statut = status;
+        if(status === 'arrive')
+        {
+            $scope.statusCmd = 'panel panel-primary';
+        }
+        if(status === 'preparee')
+        {
+            $scope.statusCmd = 'panel panel-danger';
+        }
+        if(status === 'envoyee')
+        {
+            $scope.statusCmd = 'panel panel-warning';
+        }
+        if(status === 'livree')
+        {
+            $scope.statusCmd = 'panel panel-success';
+        }
+
+    };
 
 }]);
