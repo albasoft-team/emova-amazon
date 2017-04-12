@@ -25,10 +25,20 @@ class OrderLineRepository extends \Doctrine\ORM\EntityRepository
             ->orderBy('o.dateFacturation', 'ASC')
             ->getQuery();
 
-        $orders = $query->getResult();
+        $orders = $query->setMaxResults(5)->getResult();
         return $orders;
         // to get just one result:
         // $product = $query->setMaxResults(1)->getOneOrNullResult();
+    }
+
+    public function countNumberCommandeArrive()
+    {
+        $query = $this->createQueryBuilder('com')
+            ->select('COUNT(com.statut), com.statut')
+            ->groupBy('com.statut')
+            ->getQuery()
+            ->getScalarResult();
+        return $query;
     }
 
 }

@@ -32,8 +32,7 @@ class OrderLineType extends AbstractType
                 'html5' => false,
                 // this is actually the default format for single_text
                 'format' => 'dd-MM-yyyy',
-                'placeholder' => 'jj-mm-aaaa',
-                'attr' => array('class' => 'form-control')
+                'attr' => array('class' => 'form-control' ,  'placeholder' => 'jj-mm-aaaa')
             ))
             ->add('numeroFacture',TextType::class, array('attr' => array('class' => 'form-control')))
             ->add('devise',TextType::class, array('attr' => array('class' => 'form-control')))

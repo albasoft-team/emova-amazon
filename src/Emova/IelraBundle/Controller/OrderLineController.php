@@ -34,11 +34,13 @@ class OrderLineController extends Controller
         $orderLinesLivre = $em->getRepository('IelraBundle:OrderLine')->getOrderLineByStatut('livree');
         $orderLinesPre = $em->getRepository('IelraBundle:OrderLine')->getOrderLineByStatut('preparee');
         $orderLinesEnv = $em->getRepository('IelraBundle:OrderLine')->getOrderLineByStatut('envoyee');
+        $result = $em->getRepository('IelraBundle:OrderLine')->countNumberCommandeArrive();
         return $this->render('orderline/index.html.twig', array(
             'orderLines' => $orderLines,
             'orderLinesL' => $orderLinesLivre,
             'orderLinesP' => $orderLinesPre,
-            'orderLinesE' => $orderLinesEnv
+            'orderLinesE' => $orderLinesEnv,
+            'nombre' => $result
         ));
     }
 
@@ -118,7 +120,6 @@ class OrderLineController extends Controller
         $orderLine = new Orderline();
         $form = $this->createForm('Emova\IelraBundle\Form\OrderLineType', $orderLine);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($orderLine);
@@ -209,4 +210,17 @@ class OrderLineController extends Controller
             ->getForm()
         ;
     }
+
+//    /**
+//     * @Route("/numberCommandes")
+//     * @return JsonResponse
+//     *
+//     */
+//    public function numberCommandes()
+//    {
+//        $em = $this->getDoctrine()->getManager();
+//
+//
+//        return new JsonResponse($result);
+//    }
 }

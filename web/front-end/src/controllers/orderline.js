@@ -57,5 +57,18 @@ emovaApp.controller('orderlineController', ['$scope','$http','$rootScope','$wind
         }
 
     };
+    
+    $scope.getNumberCommande = function () {
+        $http({
+            method: 'GET',
+            url: '/orderline/numberCommandes'
+        }).then(function successCallback(response) {
+            console.log(response.data);
+            // $scope.orderLines = response.data;
+        }, function errorCallback(response) {
+
+        });
+
+    }
 
 }]);
