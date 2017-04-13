@@ -3,12 +3,31 @@
 {% block body %}
     <div ng-controller="orderlineController">
         <div class="row">
+            {% set nbArr = 0 %}
+            {% set nbPre = 0 %}
+            {% set nbEnv = 0 %}
+            {% set nbLiv = 0 %}
+            {% for nb in nombre %}
+                {% if(nb['statut'] and nb['statut'] == 'arrive')  %}
+                    {% set nbArr = nb[1] %}
+                {% endif %}
+                {% if(nb['statut'] and nb['statut'] == 'preparee')  %}
+                    {% set nbPre = nb[1] %}
+                {% endif %}
+                {% if(nb['statut'] and nb['statut'] == 'envoyee')  %}
+                    {% set nbEnv = nb[1] %}
+                {% endif %}
+                {% if(nb['statut'] and nb['statut'] == 'livree')  %}
+                    {% set nbLiv = nb[1] %}
+                {% endif %}
+
+            {% endfor %}
             {% if is_granted('ROLE_GESCOM') %}
             <div class="col-xs-12 col-lg-6 col-md-12">
                 <div class = "panel panel-primary">
                     <div class = "panel-heading">
                         <a href="{{ path("orderline_all" , {'statut' : 'arrive'}) }}" class="panel-title pull-right"><i class="glyphicon glyphicon-resize-full"></i></a>
-                        <p class = "panel-title">Commandes en arrivée</p>
+                        <p class = "panel-title">Commandes en arrivée ({{ nbArr }}) </p>
                     </div>
 
                     <div class = "panel-body table-responsive">
@@ -76,7 +95,7 @@
                     <div class = "panel panel-danger">
                         <div class = "panel-heading">
                             <a href="{{ path("orderline_all", {'statut' : 'preparee'}) }}"  class="panel-title pull-right"><i class="glyphicon glyphicon-resize-full"></i></a>
-                            <h3 class = "panel-title">Commandes préparées</h3>
+                            <h3 class = "panel-title">Commandes préparées ({{ nbPre }})</h3>
                         </div>
 
                         <div class = "panel-body table-responsive">
@@ -145,7 +164,7 @@
                         <div class = "panel panel-warning">
                         <div class = "panel-heading">
                             <a href="{{ path("orderline_all", {'statut' : 'envoyee'}) }}"  class="panel-title pull-right"><i class="glyphicon glyphicon-resize-full"></i></a>
-                            <h3 class = "panel-title">Commandes envoyées</h3>
+                            <h3 class = "panel-title">Commandes envoyées ({{ nbEnv }})</h3>
                         </div>
 
                         <div class = "panel-body table-responsive">
@@ -212,7 +231,7 @@
                 <div class = "panel panel-success">
                     <div class = "panel-heading">
                         <a href="{{ path("orderline_all", {'statut' : 'livree'}) }}" class="panel-title pull-right"><i class="glyphicon glyphicon-resize-full"></i></a>
-                        <h3 class = "panel-title">Commandes livrées</h3>
+                        <h3 class = "panel-title">Commandes livrées ({{ nbLiv }})</h3>
                     </div>
                     <div class = "panel-body table-responsive">
                         {% if orderLinesL %}

@@ -23,7 +23,7 @@
 
 <body ng-app="emovaApp">
 
-<nav class="navbar navbar-inverse container">
+<nav class="navbar navbar-inverse">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -62,22 +62,19 @@
             {% endblock %}
         </div>
 </div><!-- /.container -->
-<div class="container">
-<footer id="myFooter">
-    <div class="row">
-        {% if nombre is defined  %}
-            {% for nb in nombre %}
-                <div class="col-sm-3  ">
-                    <h4>{{ nb['statut']|upper }} : {{ nb[1] }}</h4>
-                </div>
-            {% endfor %}
-        {% endif %}
+<nav class="navbar navbar-inverse navbar-fixed-bottom">
+    <div class="container">
+        {#<div class="navbar-header">#}
+            {#<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">#}
+                {#<span class="sr-only">Toggle navigation</span>#}
+                {#<span class="icon-bar"></span>#}
+                {#<span class="icon-bar"></span>#}
+                {#<span class="icon-bar"></span>#}
+            {#</button>#}
+        {#</div>#}
+        <p class="text-center" style="margin-top: 10px; color: white">&copy; Copyright Albasoft 2017</p>
     </div>
-    <div class="footer-copyright">
-        <p>© Copyright Albasoft 2017 </p>
-    </div>
-</footer>
-</div>
+</nav>
 <script
         src="https://code.jquery.com/jquery-3.2.1.min.js"
         integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="

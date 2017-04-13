@@ -10,16 +10,7 @@
                 <a href="{{ path('orderline_index') }}" class="panel-title pull-right">
                     <i class="glyphicon glyphicon-resize-small"></i>
                 </a>
-                {#{% endif %}#}
-                {#{% set titre = "" %}#}
-                {#{% for orderLine in orderLines %}#}
-                    {#{% if loop.index == 1 %}#}
-                        {#{% set titre = orderLine.statut %}#}
-                    {#{% endif %}#}
-                {#{% endfor %}#}
-                {#{% if orderLines %}#}
                     <p class="panel-title">Commande  [[statut]]</p>
-                {#{% endif %}#}
             </div>
             <div class="panel-body" >
                 <div class="table-responsive">
@@ -70,5 +61,8 @@
             {#<li>[[orderLine.reference]]</li>#}
         {#</ul>#}
     </div>
+    {#<div class="navigation">#}
+        {#{{ knp_pagination_render(orderLines) }}#}
+    {#</div>#}
 
 {% endblock %}

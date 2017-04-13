@@ -1,7 +1,7 @@
-body{background-image: url(http://emova-group.com/wp-content/uploads/2015/01/home-banner-1.jpg);
+body{
+    background-image: url(http://emova-group.com/wp-content/uploads/2015/01/home-banner-1.jpg);
     background-repeat: no-repeat;
-    background-size: auto;
-    height: 258px;
+    background-size: cover;
 }
 .form-signin
 {
