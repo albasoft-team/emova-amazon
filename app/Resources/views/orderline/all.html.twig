@@ -10,7 +10,8 @@
                 <a href="{{ path('orderline_index') }}" class="panel-title pull-right">
                     <i class="glyphicon glyphicon-resize-small"></i>
                 </a>
-                    <p class="panel-title">Commande  [[statut]]</p>
+                    <p ng-if="statut == 'arrive'" class="panel-title">Nouvelles commandes ({{ orderLines.getTotalItemCount }})</p>
+                    <p ng-if="statut !== 'arrive'" class="panel-title">Commandes [[statut]]s ({{ orderLines.getTotalItemCount }})</p>
             </div>
             <div class="panel-body" >
                 <div class="table-responsive">
@@ -20,11 +21,11 @@
                             <th>Reference</th>
                             <th>Numero commande</th>
                             <th>Designation</th>
-                            <th>Address livraison</th>
+                            <th class="hidden-xs hidden-md">Address livraison</th>
                             <th>Quantite</th>
-                            <th>Prixunitaire</th>
+                            <th class="hidden-xs hidden-md">Prixunitaire</th>
                             <th>Prixttc</th>
-                            <th>statut</th>
+                            <th class="hidden-xs hidden-md">statut</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -36,12 +37,12 @@
                                 </td>
                                 <td>{{  orderLine.numeroCommande }}</td>
                                 <td>{{  orderLine.designation }}</td>
-                                <td>{{  orderLine.addressLivraison }}</td>
+                                <td class="hidden-xs hidden-md">{{  orderLine.addressLivraison }}</td>
                                 {#<td>{% if orderLine.dateFacturation %}{{ orderLine.dateFacturation|date('d-m-Y') }}{% endif %}</td>#}
                                 <td>{{  orderLine.quantite }}</td>
-                                <td>{{  orderLine.prixUnitaire }}</td>
+                                <td class="hidden-xs hidden-md">{{  orderLine.prixUnitaire }}</td>
                                 <td>{{  orderLine.prixTTC }}</td>
-                                <td>{{  orderLine.statut }}</td>
+                                <td class="hidden-xs hidden-md">{{  orderLine.statut }}</td>
                                 {#<td>#}
                                 {#<a class="btn btn-default" href="{{ path('orderline_show', { 'id': orderLine.id }) }}">show</a> |#}
                                 {#<a class="btn btn-success" href="{{ path('orderline_edit', { 'id': orderLine.id }) }}">edit</a>#}
@@ -61,8 +62,9 @@
             {#<li>[[orderLine.reference]]</li>#}
         {#</ul>#}
     </div>
-    {#<div class="navigation">#}
-        {#{{ knp_pagination_render(orderLines) }}#}
-    {#</div>#}
+    <div class="navigation text-center">
+        {{ knp_pagination_render(orderLines) }}
+    </div>
+
 
 {% endblock %}

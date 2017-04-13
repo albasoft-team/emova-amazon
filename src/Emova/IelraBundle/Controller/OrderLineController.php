@@ -52,11 +52,15 @@ class OrderLineController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $query = $em->getRepository('IelraBundle:OrderLine')->getOrderLineByStatut($statut);
+        /**
+         * @var $paginator \Knp\Component\Pager\Paginator
+         */
         $paginator  = $this->get('knp_paginator');
+
         $orderLines = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1)/*page number*/,
-            2/*limit per page*/
+            $request->query->getInt('limit', 3)/*limit per page*/
         );
         return $this->render('orderline/all.html.twig', array(
             'orderLines' => $orderLines
