@@ -1,70 +1,324 @@
 {% extends 'base.html.twig' %}
-
+{% block stylesheets %}
+    <style>
+        .pagination > .active > a{
+            background-color: #ddd !important;
+        }
+        .modal-body {
+            text-align: left;
+        }
+    </style>
+    {% endblock %}
 {% block body %}
-    <div class="row" ng-controller="orderlineController">
-        {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
-        <div ng-init="getCurrentStatus('{{ currentPath }}')" class="[[statusCmd]]">
-            {#<input type="button"  ng-click="getAll()" value="Orderline" />#}
+    <div class="row"  ng-controller="orderlineController">
+        {#{% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}#}
+        <div ng-init="getAll()" class="panel panel-default">
             <div class = "panel-heading">
                 {#{% if orderLines %}#}
                 <a href="{{ path('orderline_index') }}" class="panel-title pull-right">
                     <i class="glyphicon glyphicon-resize-small"></i>
                 </a>
-                    <p ng-if="statut == 'arrive'" class="panel-title">Nouvelles commandes ({{ orderLines.getTotalItemCount }})</p>
-                    <p ng-if="statut !== 'arrive'" class="panel-title">Commandes [[statut]]s ({{ orderLines.getTotalItemCount }})</p>
+                    <p class="panel-title">Gestion des commandes</p>
             </div>
             <div class="panel-body" >
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th>Reference</th>
-                            <th>Numero commande</th>
-                            <th>Designation</th>
-                            <th class="hidden-xs hidden-md">Address livraison</th>
-                            <th>Quantite</th>
-                            <th class="hidden-xs hidden-md">Prixunitaire</th>
-                            <th>Prixttc</th>
-                            <th class="hidden-xs hidden-md">statut</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                       {% for orderLine in orderLines %}
-                            <tr>
-                                {#<td><a href="{{ path('orderline_show', { 'id': orderLine.id }) }}">{{ orderLine.id }}</a></td>#}
-                                <td>
-                                    <a href="#">{{  orderLine.reference }}</a>
-                                </td>
-                                <td>{{  orderLine.numeroCommande }}</td>
-                                <td>{{  orderLine.designation }}</td>
-                                <td class="hidden-xs hidden-md">{{  orderLine.addressLivraison }}</td>
-                                {#<td>{% if orderLine.dateFacturation %}{{ orderLine.dateFacturation|date('d-m-Y') }}{% endif %}</td>#}
-                                <td>{{  orderLine.quantite }}</td>
-                                <td class="hidden-xs hidden-md">{{  orderLine.prixUnitaire }}</td>
-                                <td>{{  orderLine.prixTTC }}</td>
-                                <td class="hidden-xs hidden-md">{{  orderLine.statut }}</td>
-                                {#<td>#}
-                                {#<a class="btn btn-default" href="{{ path('orderline_show', { 'id': orderLine.id }) }}">show</a> |#}
-                                {#<a class="btn btn-success" href="{{ path('orderline_edit', { 'id': orderLine.id }) }}">edit</a>#}
-                                {#</td>#}
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Nav tabs --><div class="card">
+                            <ul class="nav nav-tabs" role="tablist">
+                                {% if is_granted('ROLE_GESCOM') %}
+                                <li role="presentation" ng-click='getCommandeArrive("arrive")' class="active">
+                                    <a href="#arrive" aria-controls="arrive" role="tab" data-toggle="tab">En arrivées <span class="label  label-primary">[[orderLines.length]]</span></a>
+                                </li>
+                                <li role="presentation"  ng-click="getCommandePre('preparee')">
+                                    <a href="#preparee" aria-controls="preparee" role="tab" data-toggle="tab">En préparation <span class="label  label-danger">[[orderLinesPre.length]]</span></a>
+                                </li>
+                                <li role="presentation"  ng-click="getCommandeEnv('envoyee')">
+                                    <a href="#envoyee" aria-controls="envoyee" role="tab" data-toggle="tab">
+                                        Envoyées   <span class="label  label-warning">[[orderLinesEnv.length]]</span>
+                                    </a>
+                                </li>
+                                {% endif %}
+                                {% if is_granted('ROLE_SUPCOM')  %}
+                                <li role="presentation"  ng-click="getCommandeLiv('livree')">
+                                    <a href="#livree" aria-controls="livree" role="tab" data-toggle="tab">Livrées  <span class="label  label-success">[[orderLinesLiv.length]]</span></a>
+                                </li>
+                                {% endif %}
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active contentCmd" id="arrive">
+
+                                    <div class="table-responsive" style="margin-top: 20px">
+                                        <table ng-table="orderLinesAll"  class="table table-hover">
+                                            <thead style="background-color: #337ab7; color: white">
+                                            <tr>
+                                                <th>Reference</th>
+                                                <th>Numero commande</th>
+                                                <th>Designation</th>
+                                                <th class="hidden-xs hidden-md">Address livraison</th>
+                                                <th>Quantite</th>
+                                                <th class="hidden-xs hidden-md">Prixunitaire</th>
+                                                <th>Prixttc</th>
+                                                <th class="hidden-xs hidden-md">statut</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="text-center">
+                                            {#{% for orderLine in orderLines %}#}
+                                                <tr ng-repeat="orderLine in $data track by orderLine.id">
+                                                    {#<td><a href="#">[[ orderLine.id ]]</a></td>#}
+                                                    <td>
+                                                        <a href="#"  data-toggle="modal" data-target="#myModal[[ orderLine.id ]]">[[  orderLine.reference ]]</a>
+                                                        <div id="myModal[[ orderLine.id]]" class="modal fade" role="dialog">
+                                                            <div class="modal-dialog">
+
+                                                                <!-- Modal content-->
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                        <h4 class="modal-title">[[  orderLine.numeroCommande ]]</h4>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <ul class="list-group">
+                                                                            <li class="list-group-item">Reference : <span class="badge">[[  orderLine.reference ]]</span></li>
+                                                                            <li class="list-group-item">Numéro commande : <span class="badge">[[  orderLine.numeroCommande ]]</span></li>
+                                                                            <li class="list-group-item">Désignation : <span class="badge">[[  orderLine.designation ]]</span></li>
+                                                                            <li class="list-group-item">Adresse de livraison : <span class="badge">[[  orderLine.addressLivraison ]]</span></li>
+                                                                            <li class="list-group-item">Quantité: <span class="badge">[[  orderLine.quantite ]]</span></li>
+                                                                            <li class="list-group-item">Prix unitaire : <span class="badge">[[  orderLine.prixUnitaire ]]</span></li>
+                                                                            <li class="list-group-item">Prix TTC : <span class="badge">[[  orderLine.prixTTC ]]</span></li>
+                                                                            <li class="list-group-item">Statut : <span class="badge">[[  orderLine.statut ]]</span></li>
+                                                                        </ul>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" ng-click="setStatus([[ orderLine.id ]], 'arrive')" class="btn btn-success pull-left" >Preparer</button>
+                                                                        <button type="button" id="closepop" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>[[  orderLine.numeroCommande ]]</td>
+                                                    <td>[[  orderLine.designation ]]</td>
+                                                    <td class="hidden-xs hidden-md">[[  orderLine.addressLivraison ]]</td>
+                                                    {#<td ng-if="orderLine.dateFacturation">[[ orderLine.dateFacturation | date :  "dd-MM-y" ]]</td>#}
+                                                    <td>[[  orderLine.quantite ]]</td>
+                                                    <td class="hidden-xs hidden-md">[[  orderLine.prixUnitaire ]]</td>
+                                                    <td>[[  orderLine.prixTTC ]]</td>
+                                                    <td class="hidden-xs hidden-md">[[  orderLine.statut ]]</td>
+                                                    {#<td>#}
+                                                        {#<a class="btn btn-default" href="{{ path('orderline_show', { 'id': orderLine.id }) }}">show</a> |#}
+                                                        {#<a class="btn btn-success" href="{{ path('orderline_edit', { 'id': orderLine.id }) }}">edit</a>#}
+                                                    {#</td>#}
+                                                </tr>
+                                            {#{% endfor %}#}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="preparee">
+                                    <div class="table-responsive" style="margin-top: 20px">
+                                        <table ng-table="orderLinesAll" class="table table-hover">
+                                            <thead style="background-color: #d9534f; color: white">
+                                            <tr>
+                                                <th>Reference</th>
+                                                <th>Numero commande</th>
+                                                <th>Designation</th>
+                                                <th class="hidden-xs hidden-md">Address livraison</th>
+                                                <th>Quantite</th>
+                                                <th class="hidden-xs hidden-md">Prixunitaire</th>
+                                                <th>Prixttc</th>
+                                                <th class="hidden-xs hidden-md">statut</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="text-center">
+                                            {#{% for orderLine in orderLines %}#}
+                                            <tr ng-repeat="orderLine in $data track by orderLine.id">
+                                                {#<td><a href="#">[[ orderLine.id ]]</a></td>#}
+                                                <td>
+                                                    <a href="#"  data-toggle="modal" data-target="#myModal[[ orderLine.reference ]]">[[  orderLine.reference ]]</a>
+                                                    <div id="myModal[[ orderLine.reference]]" class="modal fade" role="dialog">
+                                                        <div class="modal-dialog">
+
+                                                            <!-- Modal content-->
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    <h4 class="modal-title">[[  orderLine.numeroCommande ]]</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <ul class="list-group">
+                                                                        <li class="list-group-item">Reference : <span class="badge">[[  orderLine.reference ]]</span></li>
+                                                                        <li class="list-group-item">Numéro commande : <span class="badge">[[  orderLine.numeroCommande ]]</span></li>
+                                                                        <li class="list-group-item">Désignation : <span class="badge">[[  orderLine.designation ]]</span></li>
+                                                                        <li class="list-group-item">Adresse de livraison : <span class="badge">[[  orderLine.addressLivraison ]]</span></li>
+                                                                        <li class="list-group-item">Quantité: <span class="badge">[[  orderLine.quantite ]]</span></li>
+                                                                        <li class="list-group-item">Prix unitaire : <span class="badge">[[  orderLine.prixUnitaire ]]</span></li>
+                                                                        <li class="list-group-item">Prix TTC : <span class="badge">[[  orderLine.prixTTC ]]</span></li>
+                                                                        <li class="list-group-item">Statut : <span class="badge">[[  orderLine.statut ]]</span></li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" ng-click="setStatus([[ orderLine.id ]], 'preparee')" class="btn btn-success pull-left" >Envoyer</button>
+                                                                    <button  id="closepop" type="button"  class="btn btn-default" data-dismiss="modal">Fermer</button>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>[[  orderLine.numeroCommande ]]</td>
+                                                <td>[[  orderLine.designation ]]</td>
+                                                <td class="hidden-xs hidden-md">[[  orderLine.addressLivraison ]]</td>
+                                                {#<td ng-if="orderLine.dateFacturation">[[ orderLine.dateFacturation | date :  "dd-MM-y" ]]</td>#}
+                                                <td>[[  orderLine.quantite ]]</td>
+                                                <td class="hidden-xs hidden-md">[[  orderLine.prixUnitaire ]]</td>
+                                                <td>[[  orderLine.prixTTC ]]</td>
+                                                <td class="hidden-xs hidden-md">[[  orderLine.statut ]]</td>
+                                                {#<td>#}
+                                                {#<a class="btn btn-default" href="{{ path('orderline_show', { 'id': orderLine.id }) }}">show</a> |#}
+                                                {#<a class="btn btn-success" href="{{ path('orderline_edit', { 'id': orderLine.id }) }}">edit</a>#}
+                                                {#</td>#}
+                                            </tr>
+                                            {#{% endfor %}#}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="envoyee">
+                                    <div class="table-responsive" style="margin-top: 20px" >
+                                        <table ng-table="orderLinesAll" class="table table-hover">
+                                            <thead style="background-color: #f0ad4e; color: white">
+                                            <tr>
+                                                <th>Reference</th>
+                                                <th>Numero commande</th>
+                                                <th>Designation</th>
+                                                <th class="hidden-xs hidden-md">Address livraison</th>
+                                                <th>Quantite</th>
+                                                <th class="hidden-xs hidden-md">Prixunitaire</th>
+                                                <th>Prixttc</th>
+                                                <th class="hidden-xs hidden-md">statut</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="text-center">
+                                            {#{% for orderLine in orderLines %}#}
+                                            <tr ng-repeat="orderLine in $data track by orderLine.id">
+                                                {#<td><a href="#">[[ orderLine.id ]]</a></td>#}
+                                                <td>
+                                                    <a href="#"  data-toggle="modal" data-target="#myModal[[ orderLine.numeroCommande ]]">[[  orderLine.reference ]]</a>
+                                                    <div id="myModal[[ orderLine.numeroCommande ]]" class="modal fade" role="dialog">
+                                                        <div class="modal-dialog">
+
+                                                            <!-- Modal content-->
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                    <h4 class="modal-title">[[  orderLine.numeroCommande ]]</h4>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <ul class="list-group">
+                                                                        <li class="list-group-item">Reference : <span class="badge">[[  orderLine.reference ]]</span></li>
+                                                                        <li class="list-group-item">Numéro commande : <span class="badge">[[  orderLine.numeroCommande ]]</span></li>
+                                                                        <li class="list-group-item">Désignation : <span class="badge">[[  orderLine.designation ]]</span></li>
+                                                                        <li class="list-group-item">Adresse de livraison : <span class="badge">[[  orderLine.addressLivraison ]]</span></li>
+                                                                        <li class="list-group-item">Quantité: <span class="badge">[[  orderLine.quantite ]]</span></li>
+                                                                        <li class="list-group-item">Prix unitaire : <span class="badge">[[  orderLine.prixUnitaire ]]</span></li>
+                                                                        <li class="list-group-item">Prix TTC : <span class="badge">[[  orderLine.prixTTC ]]</span></li>
+                                                                        <li class="list-group-item">Statut : <span class="badge">[[  orderLine.statut ]]</span></li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" ng-click="setStatus([[ orderLine.id ]], 'envoyee')" class="btn btn-success pull-left" >Livrer</button>
+                                                                    <button id="closepop"  type="button" class="btn btn-default closepop" data-dismiss="modal">Fermer</button>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>[[  orderLine.numeroCommande ]]</td>
+                                                <td>[[  orderLine.designation ]]</td>
+                                                <td class="hidden-xs hidden-md">[[  orderLine.addressLivraison ]]</td>
+                                                {#<td ng-if="orderLine.dateFacturation">[[ orderLine.dateFacturation | date :  "dd-MM-y" ]]</td>#}
+                                                <td>[[  orderLine.quantite ]]</td>
+                                                <td class="hidden-xs hidden-md">[[  orderLine.prixUnitaire ]]</td>
+                                                <td>[[  orderLine.prixTTC ]]</td>
+                                                <td class="hidden-xs hidden-md">[[  orderLine.statut ]]</td>
+                                                {#<td>#}
+                                                {#<a class="btn btn-default" href="{{ path('orderline_show', { 'id': orderLine.id }) }}">show</a> |#}
+                                                {#<a class="btn btn-success" href="{{ path('orderline_edit', { 'id': orderLine.id }) }}">edit</a>#}
+                                                {#</td>#}
+                                            </tr>
+                                            {#{% endfor %}#}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="livree" >
+                                    <div class="table-responsive" style="margin-top: 20px">
+                                        <table ng-table="orderLinesAll" class="table table-hover">
+                                            <thead style="background-color: #5cb85c; color: white">
+                                            <tr>
+                                                <th>Reference</th>
+                                                <th>Numero commande</th>
+                                                <th>Designation</th>
+                                                <th class="hidden-xs hidden-md">Address livraison</th>
+                                                <th>Quantite</th>
+                                                <th class="hidden-xs hidden-md">Prixunitaire</th>
+                                                <th>Prixttc</th>
+                                                <th class="hidden-xs hidden-md">statut</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="text-center">
+                                            {#{% for orderLine in orderLines %}#}
+                                            <tr ng-repeat="orderLine in $data track by orderLine.id">
+                                                {#<td><a href="#">[[ orderLine.id ]]</a></td>#}
+                                                <td>
+                                                    <a>[[  orderLine.reference ]]</a>
+                                                </td>
+                                                <td>[[  orderLine.numeroCommande ]]</td>
+                                                <td>[[  orderLine.designation ]]</td>
+                                                <td class="hidden-xs hidden-md">[[  orderLine.addressLivraison ]]</td>
+                                                {#<td ng-if="orderLine.dateFacturation">[[ orderLine.dateFacturation | date :  "dd-MM-y" ]]</td>#}
+                                                <td>[[  orderLine.quantite ]]</td>
+                                                <td class="hidden-xs hidden-md">[[  orderLine.prixUnitaire ]]</td>
+                                                <td>[[  orderLine.prixTTC ]]</td>
+                                                <td class="hidden-xs hidden-md">[[  orderLine.statut ]]</td>
+                                                {#<td>#}
+                                                {#<a class="btn btn-default" href="{{ path('orderline_show', { 'id': orderLine.id }) }}">show</a> |#}
+                                                {#<a class="btn btn-success" href="{{ path('orderline_edit', { 'id': orderLine.id }) }}">edit</a>#}
+                                                {#</td>#}
+                                            </tr>
+                                            {#{% endfor %}#}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Modal -->
 
             </div>
         </div>
-
+        {#<table ng-table="usersTable " class="table">#}
+            {#<tr ng-repeat="user in $data track by user.id">#}
+                {#<td data-title="'Name'" >#}
+                    {#[[user.name]]</td>#}
+                {#<td data-title="'Age'" >#}
+                    {#[[user.age]]</td>#}
+            {#</tr>#}
+        {#</table>#}
         {#<ul >#}
             {#<li>[[orderLine.reference]]</li>#}
         {#</ul>#}
     </div>
-    <div class="navigation text-center">
-        {{ knp_pagination_render(orderLines) }}
-    </div>
+    {#<div class="navigation text-center">#}
+        {#{{ knp_pagination_render(orderLines) }}#}
+    {#</div>#}
 
 
 {% endblock %}

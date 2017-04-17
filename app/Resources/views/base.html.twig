@@ -15,15 +15,18 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('bundles/ielra/css/Footer-with-button-logo.css') }}">
-
+    <link rel="stylesheet" href="{{ asset('front-end/node_modules/ng-table/bundles/ng-table.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('bundles/ielra/css/style2.css') }}">
     <style>
-
+        #content {
+            margin-top: 70px;
+        }
     </style>
 </head>
 
 <body ng-app="emovaApp">
 
-<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -56,7 +59,7 @@
 
 <div>
 </div>
-<div class="container">
+<div id="content" class="container">
         <div class="row">
             {% block body %}
             {% endblock %}
@@ -86,6 +89,7 @@
 <script src="{{ asset('front-end/bower_components/angular-resource/angular-resource.min.js') }}"></script>
 <script src="{{ asset('front-end/src/controllers/helloworld.js') }}"></script>
 <script src="{{ asset('front-end/src/controllers/orderline.js') }}"></script>
+<script  src="{{ asset('front-end/node_modules/ng-table/bundles/ng-table.min.js') }}"></script>
 {% block javascripts %}{% endblock %}
 
 </body>
