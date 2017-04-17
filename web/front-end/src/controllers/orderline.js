@@ -26,7 +26,9 @@ emovaApp.controller('orderlineController', ['$scope','$http','$rootScope','$wind
                $scope.getAll();
                  $('.close').click();
 
-             //   constructCmds(response.data);
+                if (typeof id !== "object") {
+                    $window.location.reload();
+                }
         }, function errorCallback(response) {
                 alert("impossible de recupérer les donnée");
         })

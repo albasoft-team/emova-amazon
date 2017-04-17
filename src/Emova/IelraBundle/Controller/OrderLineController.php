@@ -51,7 +51,7 @@ class OrderLineController extends Controller
     public function allCommandeAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $orderLines = $em->getRepository('IelraBundle:OrderLine')->getOrderLineByStatut('arrive');
+        $orderLines = $em->getRepository('IelraBundle:OrderLine')->getOrderLineBy('arrive');
         /**
          * @var $paginator \Knp\Component\Pager\Paginator
          */
@@ -111,7 +111,7 @@ class OrderLineController extends Controller
     public function allCommandesAction($statut)
     {
         $em = $this->getDoctrine()->getManager();
-        $orderLines = $em->getRepository('IelraBundle:OrderLine')->getOrderLineByStatut($statut);
+        $orderLines = $em->getRepository('IelraBundle:OrderLine')->getOrderLineBy($statut);
 //        var_dump($orderLines);
         $serializer = $this->get('serializer');
         $arrayResult = $serializer->normalize($orderLines);
@@ -249,18 +249,4 @@ class OrderLineController extends Controller
             ->getForm()
         ;
     }
-
-//    /**
-//     * @Route("/getNumberCmd")
-//     * @Method("GET")
-//     */
-//    public function getNumberCmd()
-//    {
-//        $em = $this->getDoctrine()->getManager();
-//        $result = $em->getRepository('IelraBundle:OrderLine')->countNumberCommande();
-//        $serializer = $this->get('serializer');
-//        $arrayResult = $serializer->normalize($result);
-//
-//        return new JsonResponse($arrayResult);
-//    }
 }
