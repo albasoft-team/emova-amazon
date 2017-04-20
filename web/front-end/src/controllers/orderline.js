@@ -113,17 +113,43 @@ emovaApp.controller('orderlineController', ['$scope','$http','$rootScope','$wind
             }
         });
     };
+    $scope.result = [];
     $scope.getNumberComandes = function () {
         $http.get('/orderline/getNumberCmd')
             .then(function successCallback(response) {
                 var results = response.data;
                 angular.forEach(results, function (value,key) {
-                   if (value.statut == 'arrive') {
-                   }
-                    
-                })
+                    var statut = {}
+                    statut.label = value.statut;
+                    statut.value = value[1]
+                    $scope.result.push(statut);
+                });
             }, function errorCallback(response) {
 
             });
-    }
+    };
+    $scope.orderlineDataSource = {
+        chart : {
+            "yaxisname": "Nombre",
+            "xaxisname": "Commandes",
+            "bgcolor": "FFFFFF",
+            "useroundedges": "1",
+            // "theme": "ocean",
+        },
+        data : $scope.result
+    };
+    $scope.orderlineDataSourcePie = {
+        chart : {
+            "startingangle": "120",
+            "showlabels": "0",
+            "showlegend": "1",
+            "enablemultislicing": "0",
+            "slicingdistance": "15",
+            "showpercentvalues": "1",
+            "showpercentintooltip": "0",
+            // "theme": "zune",
+        },
+        data : $scope.result
+    };
+
 }]);

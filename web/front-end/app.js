@@ -1,6 +1,6 @@
 'use strict';
 
-var emovaApp = angular.module('emovaApp',['ngResource','ngTable'])
+var emovaApp = angular.module('emovaApp',['ngResource','ngTable', 'ng-fusioncharts'])
     .config(['$interpolateProvider', function ($interpolateProvider) {
 
         $interpolateProvider.startSymbol('[[');

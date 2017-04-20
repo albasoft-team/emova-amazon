@@ -2,6 +2,32 @@
 
 {% block body %}
     <div ng-controller="orderlineController">
+        <div class="row" ng-init="getNumberComandes()">
+            <div class="col-xs-12 col-md-12 col-lg-6">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Nombre de commande par statut</div>
+                    <div class="panel-body text-center">
+                        <fusioncharts
+                                type="column2d"
+                                datasource="[[orderlineDataSource]]"
+                        ></fusioncharts>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-12 col-lg-6">
+                <div class="panel panel-info">
+                    <div class="panel-heading">Nombre de commande par statut</div>
+                    <div class="panel-body text-center">
+                        <fusioncharts
+                                type="pie3d"
+                                datasource="[[orderlineDataSourcePie]]"
+                        ></fusioncharts>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
         <div class="row">
             {% set nbArr = 0 %}
             {% set nbPre = 0 %}
@@ -260,7 +286,7 @@
                 </div>
             </div>
             {% endif %}
-
+    </div>
 
     </div>
 
