@@ -45,13 +45,14 @@ class OrderLineController extends Controller
     }
 
     /**
-     * @Route("/all", name="orderline_all")
+     * @Route("/all/{statut}", name="orderline_all")
      * @Method("GET")
      */
-    public function allCommandeAction(Request $request)
+    public function allCommandeAction(Request $request,$statut)
     {
         $em = $this->getDoctrine()->getManager();
-        $orderLines = $em->getRepository('IelraBundle:OrderLine')->getOrderLineBy('arrive');
+             $orderLines = $em->getRepository('IelraBundle:OrderLine')->getOrderLineBy($statut);
+
         /**
          * @var $paginator \Knp\Component\Pager\Paginator
          */
@@ -64,7 +65,8 @@ class OrderLineController extends Controller
 //        );
         return $this->render('orderline/all.html.twig', array(
             'orderLines' => $orderLines,
-            'nombre' => $result
+            'nombre' => $result,
+            'statut' => $statut
         ));
     }
     /**

@@ -12,7 +12,7 @@
 {% block body %}
     <div class="row"  ng-controller="orderlineController">
         {#{% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}#}
-        <div ng-init="getAll()" class="panel panel-default">
+        <div ng-init="getAll('{{ statut }}')" class="panel panel-default">
             <div class = "panel-heading">
                 {#{% if orderLines %}#}
                 <a href="{{ path('orderline_index') }}" class="panel-title pull-right">
@@ -26,20 +26,20 @@
                         <!-- Nav tabs --><div class="card">
                             <ul class="nav nav-tabs" role="tablist">
                                 {% if is_granted('ROLE_GESCOM') %}
-                                <li role="presentation" ng-click='getCommandeArrive("arrive")' class="active">
+                                <li role="presentation" ng-click='getCommandeArrive("arrive")' class="{{ (statut=='arrive')?'active':'' }}">
                                     <a href="#arrive" aria-controls="arrive" role="tab" data-toggle="tab">En arrivées <span class="label  label-primary">[[orderLines.length]]</span></a>
                                 </li>
-                                <li role="presentation"  ng-click="getCommandePre('preparee')">
+                                <li role="presentation"  ng-click="getCommandePre('preparee')" class="{{ (statut=='preparee')?'active':'' }}">
                                     <a href="#preparee" aria-controls="preparee" role="tab" data-toggle="tab">En préparation <span class="label  label-danger">[[orderLinesPre.length]]</span></a>
                                 </li>
-                                <li role="presentation"  ng-click="getCommandeEnv('envoyee')">
+                                <li role="presentation"  ng-click="getCommandeEnv('envoyee')" class={{ (statut=='envoyee')?'active':'' }}>
                                     <a href="#envoyee" aria-controls="envoyee" role="tab" data-toggle="tab">
                                         Envoyées   <span class="label  label-warning">[[orderLinesEnv.length]]</span>
                                     </a>
                                 </li>
                                 {% endif %}
                                 {% if is_granted('ROLE_SUPCOM')  %}
-                                <li role="presentation"  ng-click="getCommandeLiv('livree')">
+                                <li role="presentation"  ng-click="getCommandeLiv('livree')" class="{{ (statut=='livree')?'active':'' }}">
                                     <a href="#livree" aria-controls="livree" role="tab" data-toggle="tab">Livrées  <span class="label  label-success">[[orderLinesLiv.length]]</span></a>
                                 </li>
                                 {% endif %}
@@ -47,7 +47,7 @@
 
                             <!-- Tab panes -->
                             <div class="tab-content">
-                                <div role="tabpanel" class="tab-pane active contentCmd" id="arrive">
+                                <div role="tabpanel" class="tab-pane contentCmd {{(statut=='arrive')?'active':'' }}" id="arrive">
 
                                     <div class="table-responsive" style="margin-top: 20px">
                                         <table ng-table="orderLinesAll"  class="table table-hover">
@@ -117,7 +117,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div role="tabpanel" class="tab-pane" id="preparee">
+                                <div role="tabpanel" class="tab-pane {{ (statut=='preparee')?'active':'' }}" id="preparee">
                                     <div class="table-responsive" style="margin-top: 20px">
                                         <table ng-table="orderLinesAll" class="table table-hover">
                                             <thead style="background-color: #d9534f; color: white">
@@ -186,7 +186,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div role="tabpanel" class="tab-pane" id="envoyee">
+                                <div role="tabpanel" class="tab-pane {{ (statut=='envoyee')?'active':'' }}" id="envoyee">
                                     <div class="table-responsive" style="margin-top: 20px" >
                                         <table ng-table="orderLinesAll" class="table table-hover">
                                             <thead style="background-color: #f0ad4e; color: white">
@@ -255,7 +255,7 @@
                                         </table>
                                     </div>
                                 </div>
-                                <div role="tabpanel" class="tab-pane" id="livree" >
+                                <div role="tabpanel" class="tab-pane {{ (statut=='livree')?'active':'' }}" id="livree">
                                     <div class="table-responsive" style="margin-top: 20px">
                                         <table ng-table="orderLinesAll" class="table table-hover">
                                             <thead style="background-color: #5cb85c; color: white">

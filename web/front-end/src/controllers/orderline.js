@@ -33,10 +33,17 @@ emovaApp.controller('orderlineController', ['$scope','$http','$rootScope','$wind
                 alert("impossible de recupérer les donnée");
         })
     };
-    $scope.getAll = function () {
+    $scope.getAll = function (statut) {
         $http.get('/orderline/allCmdr').then(function successCallback(response) {
             constructCmds(response.data);
+            if (statut=='arrive')
             pagination($scope.orderLines);
+            if (statut=='preparee')
+                pagination($scope.orderLinesPre);
+            if (statut=='envoyee')
+                pagination($scope.orderLinesEnv);
+            if (statut=='livree')
+                pagination($scope.orderLinesLiv);
         }, function errorCallback(response) {
 
         });
